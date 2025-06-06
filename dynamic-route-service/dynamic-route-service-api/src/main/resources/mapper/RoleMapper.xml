@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.RoleMapper">
+
+  <sql id="col">
+    id,name,seq,create_id
+  </sql>
+
+  <!-- 插入 -->
+  <insert id="insert" parameterType="RoleVo">
+    INSERT
+    role(
+    <include refid="col"/>
+    )VALUES(
+    #{id},#{name},#{seq},#{createId}
+    )
+  </insert>
+
+  <!-- 更新 -->
+  <update id="update" parameterType="RoleVo">
+    UPDATE
+    role
+    <set>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+    </set>
+    WHERE
+    id = #{id}
+  </update>
+
+  <!-- 删除 -->
+  <delete id="delete" parameterType="Long">
+    DELETE
+    FROM
+    role
+    WHERE
+    id = #{id}
+  </delete>
+
+  <!-- 查询模板 -->
+  <sql id="findTemp">
+    <where>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+      <if test="name != null">
+        AND name = #{name}
+      </if>
+      <if test="seq != null">
+        AND seq = #{seq}
+      </if>
+      <if test="createId != null">
+        AND create_id = #{createId}
+      </if>
+    </where>
+  </sql>
+
+  <!-- 是否存在 -->
+  <select id="exist" parameterType="RoleVo" resultType="Boolean">
+    SELECT EXISTS(SELECT 1
+    FROM
+    role
+    <include refid="findTemp"/>
+    )
+  </select>
+
+  <!-- 查询 -->
+  <select id="find" parameterType="Long" resultType="RoleVo">
+    SELECT
+    <include refid="col"/>
+    FROM
+    role
+    <include refid="findTemp"/>
+  </select>
+
+  <!-- 查询，通过id -->
+  <select id="findById" parameterType="Long" resultType="RoleVo">
+    SELECT
+    <include refid="col"/>
+    FROM
+    role
+    WHERE
+    id = #{id}
+  </select>
+
+  <!-- 查询id，通过userId -->
+  <select id="findIdByUserId" parameterType="Long" resultType="Long">
+    SELECT
+    r.id
+    FROM
+    role r
+    INNER JOIN user_role ur ON ur.role_id = r.id
+    WHERE
+    ur.user_id = #{userId}
+  </select>
+
+  <!-- 查询，通过userId -->
+  <select id="findByUserId" parameterType="Long" resultType="RoleVo">
+    SELECT
+    r.id,
+    r.name,
+    r.seq,
+    r.create_id
+    FROM
+    role r
+    INNER JOIN user_role ur ON ur.role_id = r.id
+    WHERE
+    ur.user_id = #{userId}
+  </select>
+
+</mapper>

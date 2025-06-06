@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.UserMapper">
+
+  <sql id="col">
+    id,account,password,name,is_delete,create_id,create_time
+  </sql>
+
+  <!-- 插入 -->
+  <insert id="insert" parameterType="UserVo">
+    INSERT
+    user(
+    <include refid="col"/>
+    )VALUES(
+    #{id},#{account},#{password},#{name},0,#{createId},CURRENT_TIMESTAMP
+    )
+  </insert>
+
+  <!-- 更新 -->
+  <update id="update" parameterType="UserVo">
+    UPDATE
+    user
+    <set>
+      <if test="account != null">
+        account = #{account},
+      </if>
+      <if test="password != null">
+        password = #{password},
+      </if>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete},
+      </if>
+    </set>
+    WHERE
+    id = #{id}
+  </update>
+
+  <!-- 查询模板 -->
+  <sql id="findTemp">
+    <where>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+      <if test="account != null">
+        AND account = #{account}
+      </if>
+      <if test="password != null">
+        AND password = #{password}
+      </if>
+      <if test="name != null">
+        AND name = #{name}
+      </if>
+      <if test="isDelete != null">
+        AND is_delete = #{isDelete}
+      </if>
+      <if test="createId != null">
+        AND create_id = #{createId}
+      </if>
+      <if test="createTime != null">
+        AND create_time = #{createTime}
+      </if>
+    </where>
+  </sql>
+
+  <!-- 是否存在 -->
+  <select id="exist" parameterType="UserVo" resultType="Boolean">
+    SELECT EXISTS(SELECT 1
+    FROM
+    user
+    <include refid="findTemp"/>
+    )
+  </select>
+
+  <!-- 查询 -->
+  <select id="find" parameterType="UserVo" resultType="UserVo">
+    SELECT
+    <include refid="col"/>
+    FROM
+    user
+    <include refid="findTemp"/>
+  </select>
+
+  <!-- 查询id -->
+  <select id="findId" parameterType="UserVo" resultType="Long">
+    SELECT
+    id
+    FROM
+    user
+    <include refid="findTemp"/>
+  </select>
+
+  <!-- 查询唯一键 -->
+  <select id="findOne" parameterType="UserVo" resultType="UserVo">
+    SELECT
+    <include refid="col"/>
+    FROM
+    user
+    <where>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+      <if test="account != null">
+        AND account = #{account}
+      </if>
+    </where>
+  </select>
+
+  <!-- 查询id，通过roleId -->
+  <select id="findIdByRoleId" parameterType="Long" resultType="Long">
+    SELECT
+    u.id
+    FROM
+    user u
+    INNER JOIN user_role ur ON ur.user_id = u.id
+    WHERE
+    ur.role_id = #{roleId}
+  </select>
+
+  <!-- 查询，通过roleId -->
+  <select id="findByRoleId" parameterType="Long" resultType="UserVo">
+    SELECT
+    u.id,
+    u.account,
+    u.password,
+    u.name,
+    u.is_delete,
+    u.create_id,
+    u.create_time
+    FROM
+    user u
+    INNER JOIN user_role ur ON ur.user_id = u.id
+    WHERE
+    ur.role_id = #{roleId}
+  </select>
+
+  <!-- 查询，通过roleId和createId -->
+  <select id="findByRoleIdAndCreateId" resultType="UserVo">
+    SELECT
+    u.id,
+    u.account,
+    u.password,
+    u.name,
+    u.is_delete,
+    u.create_id,
+    u.create_time
+    FROM
+    user_role ur
+    INNER JOIN user u ON ur.user_id = u.id
+    INNER JOIN role r ON ur.role_id = r.id
+    WHERE
+    ur.role_id = #{roleId}
+    AND
+    u.create_id = #{createId}
+    AND
+    r.create_id = #{createId}
+  </select>
+
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>dynamic-route-service-api</artifactId>
+  <version>1.0.0</version>
+
+  <name>dynamic-route-service-api</name>
+  <description>动态路由服务API</description>
+  <url>https://github.com/ALI1416/springboot-demo/tree/v3/demo-dynamic-route</url>
+
+  <parent>
+    <groupId>com.demo</groupId>
+    <artifactId>dynamic-route-service</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <dependencies>
+    <!--SpringBoot Web-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <!--FastJson-->
+    <dependency>
+      <groupId>com.alibaba.fastjson2</groupId>
+      <artifactId>fastjson2</artifactId>
+    </dependency>
+    <!--Redis-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <!--轻量级权限认证SpringBoot启动器-->
+    <dependency>
+      <groupId>cn.404z</groupId>
+      <artifactId>tiny-token-spring-boot-starter</artifactId>
+    </dependency>
+    <!--MyBatis-->
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+    </dependency>
+    <!--PageHelper分页排序查询-->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper-spring-boot-starter</artifactId>
+    </dependency>
+    <!--雪花ID生成器-->
+    <dependency>
+      <groupId>cn.404z</groupId>
+      <artifactId>id-spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <!--IP地址转区域-->
+    <dependency>
+      <groupId>cn.404z</groupId>
+      <artifactId>ip2region-spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <!--Knife4j-->
+    <dependency>
+      <groupId>com.github.xiaoymin</groupId>
+      <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+    </dependency>
+    <!--等待Knife4j升级版本，临时解决方案-->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.8.6</version>
+    </dependency>
+    <!--MongoDB-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
+    </dependency>
+    <!--MySQL-->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!--Redis SpringBoot模板-->
+    <dependency>
+      <groupId>cn.404z</groupId>
+      <artifactId>redis-spring-boot-temp</artifactId>
+    </dependency>
+    <!--MongoDB SpringBoot模板-->
+    <dependency>
+      <groupId>cn.404z</groupId>
+      <artifactId>mongo-spring-boot-temp</artifactId>
+    </dependency>
+    <!--工具-->
+    <dependency>
+      <groupId>cn.404z</groupId>
+      <artifactId>util</artifactId>
+    </dependency>
+    <!--SpringBoot工具-->
+    <dependency>
+      <groupId>cn.404z</groupId>
+      <artifactId>util-spring-boot</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

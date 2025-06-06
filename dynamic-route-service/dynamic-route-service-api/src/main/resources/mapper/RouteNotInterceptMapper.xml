@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.RouteNotInterceptMapper">
+
+  <sql id="col">
+    id,path,name,is_match,need_login,seq
+  </sql>
+
+  <!-- 插入 -->
+  <insert id="insert" parameterType="RouteNotInterceptVo">
+    INSERT
+    route_not_intercept(
+    <include refid="col"/>
+    )VALUES(
+    #{id},#{path},#{name},#{isMatch},#{needLogin},#{seq}
+    )
+  </insert>
+
+  <!-- 删除 -->
+  <delete id="delete" parameterType="Long">
+    DELETE
+    FROM
+    route_not_intercept
+    WHERE
+    id = #{id}
+  </delete>
+
+  <!-- 更新 -->
+  <update id="update" parameterType="RouteNotInterceptVo">
+    UPDATE
+    route_not_intercept
+    <set>
+      <if test="path != null">
+        path = #{path},
+      </if>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="isMatch != null">
+        is_match = #{isMatch},
+      </if>
+      <if test="needLogin != null">
+        need_login = #{needLogin},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+    </set>
+    WHERE
+    id = #{id}
+  </update>
+
+  <!-- 查询所有 -->
+  <select id="findAll" resultType="RouteNotInterceptVo">
+    SELECT
+    <include refid="col"/>
+    FROM
+    route_not_intercept
+  </select>
+
+</mapper>

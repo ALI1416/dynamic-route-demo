@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.RouteMapper">
+
+  <sql id="col">
+    id,path,name,seq,parent_id
+  </sql>
+
+  <!-- 插入 -->
+  <insert id="insert" parameterType="RouteVo">
+    INSERT
+    route(
+    <include refid="col"/>
+    )VALUES(
+    #{id},#{path},#{name},#{seq},#{parentId}
+    )
+  </insert>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="RouteVo">
+    INSERT
+    route(
+    <include refid="col"/>
+    )VALUES
+    <foreach collection="list" separator="," item="item">
+      (#{item.id},#{item.path},#{item.name},#{item.seq},#{item.parentId})
+    </foreach>
+  </insert>
+
+  <!-- 删除 -->
+  <delete id="delete" parameterType="Long">
+    DELETE
+    FROM
+    route
+    WHERE
+    id = #{id}
+  </delete>
+
+  <!-- 批量删除 -->
+  <delete id="batchDelete" parameterType="Long">
+    DELETE
+    FROM
+    route
+    WHERE
+    id IN
+    <foreach collection="idList" open="(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!-- 更新 -->
+  <update id="update" parameterType="RouteVo">
+    UPDATE
+    route
+    <set>
+      <if test="path != null">
+        path = #{path},
+      </if>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId},
+      </if>
+    </set>
+    WHERE
+    id = #{id}
+  </update>
+
+  <!-- 查询，通过id -->
+  <select id="findById" parameterType="Long" resultType="RouteVo">
+    SELECT
+    <include refid="col"/>
+    FROM
+    route
+    WHERE
+    id = #{id}
+  </select>
+
+  <!-- 查询模板 -->
+  <sql id="findTemp">
+    <where>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+      <if test="name != null">
+        AND name = #{name}
+      </if>
+      <if test="seq != null">
+        AND seq = #{seq}
+      </if>
+      <if test="parentId != null">
+        AND parent_id = #{parentId}
+      </if>
+    </where>
+  </sql>
+
+  <!-- 查询 -->
+  <select id="find" parameterType="Long" resultType="RouteVo">
+    SELECT
+    <include refid="col"/>
+    FROM
+    route
+    <include refid="findTemp"/>
+  </select>
+
+  <!-- 查询id，通过roleId -->
+  <select id="findIdByRoleId" parameterType="Long" resultType="Long">
+    SELECT
+    r.id
+    FROM
+    route r
+    INNER JOIN role_route rr ON r.id = rr.route_id
+    WHERE
+    rr.role_id = #{roleId}
+  </select>
+
+</mapper>
