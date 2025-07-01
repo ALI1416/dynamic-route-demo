@@ -50,9 +50,9 @@ public class UserManageController extends ControllerBase {
      * 创建用户
      */
     @PostMapping("create")
-    @Operation(summary = "创建用户", description = "需要登录/account/name/password<br>响应：成功id/失败0")
+    @Operation(summary = "创建用户", description = "需要登录,account,password<br>响应：成功id/失败0")
     public Result<Long> create(@RequestBody UserVo user) {
-        if (existNull(user.getAccount(), user.getName(), user.getPassword())) {
+        if (existNull(user.getAccount(), user.getPassword())) {
             return paramError();
         }
         user.setCreateId(UserInfo.getId());
@@ -66,7 +66,7 @@ public class UserManageController extends ControllerBase {
      * 修改用户信息(限制)
      */
     @PatchMapping("updateLimit")
-    @Operation(summary = "修改用户信息(限制)", description = "需要登录/id 至少一个account/name/password/isDelete")
+    @Operation(summary = "修改用户信息(限制)", description = "需要登录,id 至少一个account,name,password,isDelete")
     public Result<Boolean> updateLimit(@RequestBody UserVo user) {
         if (isNull(user.getId()) && !allNull(user.getName(), user.getAccount(), user.getPassword(), user.getIsDelete())) {
             return paramError();
@@ -85,7 +85,7 @@ public class UserManageController extends ControllerBase {
      * 修改用户信息
      */
     @PatchMapping("update")
-    @Operation(summary = "修改用户信息", description = "需要id 至少一个account/name/password/isDelete")
+    @Operation(summary = "修改用户信息", description = "需要id 至少一个account,name,password,isDelete")
     public Result<Boolean> update(@RequestBody UserVo user) {
         if (isNull(user.getId()) && !allNull(user.getName(), user.getAccount(), user.getPassword(), user.getIsDelete())) {
             return paramError();
@@ -100,7 +100,7 @@ public class UserManageController extends ControllerBase {
      * 修改用户角色(限制)
      */
     @PutMapping("updateRoleLimit")
-    @Operation(summary = "修改用户角色(限制)", description = "需要登录/id/roleIdList")
+    @Operation(summary = "修改用户角色(限制)", description = "需要登录,id,roleIdList")
     public Result<Boolean> updateRoleLimit(@RequestBody UserVo user) {
         if (existNull(user.getId(), user.getRoleIdList())) {
             return paramError();
@@ -125,7 +125,7 @@ public class UserManageController extends ControllerBase {
      * 修改用户角色
      */
     @PutMapping("updateRole")
-    @Operation(summary = "修改用户角色", description = "需要id/roleIdList")
+    @Operation(summary = "修改用户角色", description = "需要id,roleIdList")
     public Result<Boolean> updateRole(@RequestBody UserVo user) {
         if (existNull(user.getId(), user.getRoleIdList())) {
             return paramError();
@@ -488,7 +488,7 @@ public class UserManageController extends ControllerBase {
      * 获取用户登录日志(限制)
      */
     @PostMapping("getLoginLogLimit")
-    @Operation(summary = "获取用户登录日志(限制)", description = "需要登录/createId(查询指定用户)")
+    @Operation(summary = "获取用户登录日志(限制)", description = "需要登录,createId(查询指定用户)")
     public Result<PageInfo<LoginLogVo>> getLoginLogLimit(@RequestBody LoginLogVo loginLog) {
         // 只能管理自己创建的用户
         if (loginLog.getCreateId() == null || !userService.existIdAndCreateId(loginLog.getCreateId(), UserInfo.getId())) {

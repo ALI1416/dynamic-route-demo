@@ -28,7 +28,7 @@ public class UserDao extends DaoBase {
     /**
      * 插入
      *
-     * @param user account,password,name,createId
+     * @param user account,password,createId
      * @return ok:id,e:0
      */
     public long insert(UserVo user) {

@@ -37,9 +37,6 @@
     <!--SpringBoot Web-->
     <!--org.springframework.boot:spring-boot-starter-web-->
 
-    <!--邮件-->
-    <!--org.springframework.boot:spring-boot-starter-mail-->
-
     <!--自动装配-->
     <!--org.springframework.boot:spring-boot-autoconfigure-processor-->
 

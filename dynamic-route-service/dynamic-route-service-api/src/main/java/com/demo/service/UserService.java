@@ -35,7 +35,7 @@ public class UserService extends ServiceBase {
     /**
      * 注册
      *
-     * @param user account,name,password,createId
+     * @param user account,password,createId
      * @return ok:id,e:0
      */
     @Transactional

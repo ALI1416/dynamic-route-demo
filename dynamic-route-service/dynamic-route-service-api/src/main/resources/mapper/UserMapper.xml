@@ -12,7 +12,7 @@
     user(
     <include refid="col"/>
     )VALUES(
-    #{id},#{account},#{password},#{name},0,#{createId},CURRENT_TIMESTAMP
+    #{id},#{account},#{password},#{account},0,#{createId},CURRENT_TIMESTAMP
     )
   </insert>
 

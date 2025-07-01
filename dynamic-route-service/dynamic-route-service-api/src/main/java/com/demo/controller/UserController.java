@@ -49,7 +49,7 @@ public class UserController extends ControllerBase {
      * 用户登录
      */
     @PostMapping("login")
-    @Operation(summary = "用户登录", description = "需要account/password")
+    @Operation(summary = "用户登录", description = "需要account,password")
     public Result<UserVo> login(@RequestBody UserVo user) {
         if (existNull(user.getAccount(), user.getPassword())) {
             return paramError();
@@ -83,15 +83,15 @@ public class UserController extends ControllerBase {
      * 用户注册
      */
     @PostMapping("register")
-    @Operation(summary = "用户注册", description = "需要account/name/password<br>响应：成功id/失败0")
+    @Operation(summary = "用户注册", description = "需要account,password<br>响应：成功id/失败0")
     public Result<Long> register(@RequestBody UserVo user) {
-        if (existNull(user.getAccount(), user.getName(), user.getPassword())) {
+        if (existNull(user.getAccount(), user.getPassword())) {
             return paramError();
         }
-        user.setCreateId(0L);
         if (userService.existAccount(user.getAccount())) {
             return Result.e(ResultCode.ACCOUNT_EXIST);
         }
+        user.setCreateId(0L);
         return Result.o(userService.register(user));
     }
 
@@ -99,7 +99,7 @@ public class UserController extends ControllerBase {
      * 用户修改密码
      */
     @PatchMapping("updatePassword")
-    @Operation(summary = "用户修改密码", description = "需要登录/password/newPassword")
+    @Operation(summary = "用户修改密码", description = "需要登录,password,newPassword")
     public Result<Boolean> updatePassword(@RequestBody UserVo user) {
         if (existNull(user.getPassword(), user.getNewPassword())) {
             return paramError();
@@ -119,7 +119,7 @@ public class UserController extends ControllerBase {
      * 用户修改信息(除密码、删除)
      */
     @PatchMapping("update")
-    @Operation(summary = "用户修改信息(除密码、删除)", description = "需要登录 至少一个account/name")
+    @Operation(summary = "用户修改信息(除密码、删除)", description = "需要登录 至少一个account,name")
     public Result<Boolean> update(@RequestBody UserVo user) {
         if (user.getAccount() != null && userService.existAccount(user.getAccount())) {
             return Result.e(ResultCode.ACCOUNT_EXIST);

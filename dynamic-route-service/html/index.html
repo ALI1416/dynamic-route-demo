@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title</title>
+</head>
+
+<body>
+<h3>配置</h3>
+<div>
+  <label for="urlText">URL：</label><input id="urlText" type="text" value="http://127.0.0.1:8080/">
+  <br>
+  <label for="headerText">Header：</label><input id="headerText" type="text" value="token">
+  <br>
+  <label for="accountText">账号：</label><input id="accountText" type="text" value="root">
+  <br>
+  <label for="passwordText">密码：</label><input id="passwordText" type="text" value="root">
+  <br>
+  <input id="loginBtn" type="button" value="登录">
+  <input id="logoutBtn" type="button" value="注销">
+  <input id="statusBtn" type="button" value="手动判断登录状态">
+</div>
+<h3>登录消息</h3>
+<div id="loginMsg">暂无</div>
+<h3>错误消息</h3>
+<div id="errorMsg">暂无</div>
+<script>
+  const urlText = document.getElementById('urlText')
+  const headerText = document.getElementById('headerText')
+  const accountText = document.getElementById('accountText')
+  const passwordText = document.getElementById('passwordText')
+  const loginBtn = document.getElementById('loginBtn')
+  const logoutBtn = document.getElementById('logoutBtn')
+  const statusBtn = document.getElementById('statusBtn')
+  const loginMsg = document.getElementById('loginMsg')
+  const errorMsg = document.getElementById('errorMsg')
+
+  /**
+   * 点击手动判断登录状态按钮
+   */
+  statusBtn.addEventListener('click', () => {
+    const token = localStorage[headerText.value]
+    if (token === undefined) {
+      loginMsg.innerText = '未登录'
+    } else {
+      getUserInfo().then(res => {
+        if (res.ok) {
+          loginMsg.innerText = '已登录账号[' + res.data.account + '] token[' + token + ']'
+        } else {
+          loginMsg.innerText = res.message
+          localStorage.removeItem(headerText.value)
+        }
+      })
+    }
+  })
+
+  // 进入页面判断登录状态
+  statusBtn.click()
+
+  /**
+   * 点击登录按钮
+   */
+  loginBtn.addEventListener('click', () => {
+    const token = localStorage[headerText.value]
+    if (token !== undefined) {
+      errorMsg.innerText = '已登录账号 不可重复登录'
+      return
+    }
+    login({
+      account: accountText.value,
+      password: passwordText.value
+    }).then(res => {
+      if (res.ok) {
+        localStorage[headerText.value] = res.data.token
+        loginMsg.innerText = '登录成功 账号[' + res.data.account + '] token[' + res.data.token + ']'
+      } else {
+        errorMsg.innerText = res.message
+      }
+    })
+  })
+
+  /**
+   * 点击注销按钮
+   */
+  logoutBtn.addEventListener('click', () => {
+    const token = localStorage[headerText.value]
+    if (token === undefined) {
+      errorMsg.innerText = '账号未登录 不可注销'
+      return
+    }
+    logout().then(res => {
+      if (res.ok) {
+        loginMsg.innerText = '注销token[' + token + ']成功'
+      } else {
+        loginMsg.innerText = '注销token[' + token + ']失败'
+      }
+      localStorage.removeItem(headerText.value)
+    })
+  })
+
+  /**
+   * 获取用户信息
+   */
+  function getUserInfo() {
+    return fetchGet('user/get')
+  }
+
+  /**
+   * 用户登录
+   */
+  function login(data) {
+    return fetchPost('user/login', data)
+  }
+
+  /**
+   * 用户注销
+   */
+  function logout() {
+    return fetchGet('user/logout')
+  }
+
+  function fetchGet(path) {
+    const token = localStorage[headerText.value]
+    console.log(token)
+    console.log({
+      headers: {
+        mode: 'no-cors',
+        [headerText.value]: token
+      }
+    })
+    return fetch(urlText.value + path, {
+      headers: {
+        mode: 'no-cors',
+        [headerText.value]: token
+      }
+    }).then(res => res.json())
+      .catch(e => {
+        errorMsg.innerText = '接口[' + path + ']调用失败\n' + e
+        throw e
+      })
+  }
+
+  function fetchPost(path, data) {
+    const token = localStorage[headerText.value]
+    return fetch(urlText.value + path, {
+      method: 'post',
+      headers: {
+        mode: 'no-cors',
+        [headerText.value]: token,
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      body: JSON.stringify(data)
+    }).then(res => res.json())
+      .catch(e => {
+        errorMsg.innerText = '接口[' + path + ']调用失败\n' + e
+        throw e
+      })
+  }
+</script>
+</body>
+
+</html>

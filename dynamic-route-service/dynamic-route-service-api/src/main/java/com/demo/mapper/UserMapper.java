@@ -20,7 +20,7 @@ public interface UserMapper {
     /**
      * 插入
      *
-     * @param user id,account,password,name,createId
+     * @param user id,account,password,createId
      * @return 执行成功数量
      */
     int insert(UserVo user);

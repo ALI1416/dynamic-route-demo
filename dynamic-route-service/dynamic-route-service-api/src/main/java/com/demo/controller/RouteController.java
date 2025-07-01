@@ -39,7 +39,7 @@ public class RouteController extends ControllerBase {
      * 创建路由
      */
     @PostMapping("create")
-    @Operation(summary = "创建路由", description = "需要path/name/seq/parentId<br>响应：成功id/失败0")
+    @Operation(summary = "创建路由", description = "需要path,name,seq,parentId<br>响应：成功id/失败0")
     public Result<Long> create(@RequestBody RouteVo route) {
         if (existNull(route.getPath(), route.getName(), route.getSeq(), route.getParentId())) {
             return paramError();
@@ -56,7 +56,7 @@ public class RouteController extends ControllerBase {
      * 修改路由
      */
     @PatchMapping("update")
-    @Operation(summary = "修改路由", description = "需要id 至少一个path/name/seq/parentId")
+    @Operation(summary = "修改路由", description = "需要id 至少一个path,name,seq,parentId")
     public Result<Boolean> update(@RequestBody RouteVo route) {
         if (isNull(route.getId()) && !allNull(route.getPath(), route.getName(), route.getSeq(), route.getParentId())) {
             return paramError();

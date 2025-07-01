@@ -45,7 +45,7 @@ public class RoleController extends ControllerBase {
      * 创建角色
      */
     @PostMapping("create")
-    @Operation(summary = "创建角色", description = "需要登录/name/seq<br>响应：成功id/失败0")
+    @Operation(summary = "创建角色", description = "需要登录,name,seq<br>响应：成功id/失败0")
     public Result<Long> create(@RequestBody RoleVo role) {
         if (existNull(role.getName(), role.getSeq())) {
             return paramError();
@@ -92,7 +92,7 @@ public class RoleController extends ControllerBase {
      * 修改角色(限制)
      */
     @PatchMapping("updateLimit")
-    @Operation(summary = "修改角色(限制)", description = "需要登录/id 至少一个name/seq")
+    @Operation(summary = "修改角色(限制)", description = "需要登录,id 至少一个name,seq")
     public Result<Boolean> updateLimit(@RequestBody RoleVo role) {
         if (isNull(role.getId()) && !allNull(role.getName(), role.getSeq())) {
             return paramError();
@@ -108,7 +108,7 @@ public class RoleController extends ControllerBase {
      * 修改角色
      */
     @PatchMapping("update")
-    @Operation(summary = "修改角色", description = "需要id 至少一个name/seq")
+    @Operation(summary = "修改角色", description = "需要id 至少一个name,seq")
     public Result<Boolean> update(@RequestBody RoleVo role) {
         if (isNull(role.getId()) && !allNull(role.getName(), role.getSeq())) {
             return paramError();
@@ -120,7 +120,7 @@ public class RoleController extends ControllerBase {
      * 修改角色的路由(限制)
      */
     @PutMapping("updateRouteLimit")
-    @Operation(summary = "修改角色的路由(限制)", description = "需要登录/id/routeIdList")
+    @Operation(summary = "修改角色的路由(限制)", description = "需要登录,id,routeIdList")
     public Result<Boolean> updateRouteLimit(@RequestBody RoleVo role) {
         Long roleId = role.getId();
         List<Long> routeIdList = role.getRouteIdList();
@@ -152,7 +152,7 @@ public class RoleController extends ControllerBase {
      * 修改角色的路由
      */
     @PutMapping("updateRoute")
-    @Operation(summary = "修改角色的路由", description = "需要id/routeIdList")
+    @Operation(summary = "修改角色的路由", description = "需要id,routeIdList")
     public Result<Boolean> updateRoute(@RequestBody RoleVo role) {
         Long roleId = role.getId();
         List<Long> routeIdList = role.getRouteIdList();
